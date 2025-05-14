@@ -20,7 +20,7 @@ jobs:
           java-version: '21'
 
       - name: checkstyle
-        run: mvn run checkstyle:check
+        run: mvn checkstyle:check
 
   build-and-test:
     name: Build and Test
