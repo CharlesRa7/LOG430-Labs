@@ -39,32 +39,32 @@ jobs:
       - name: Build and Test
         run: mvn test
 
-    build-and-push-docker-image:
-      name: Build and Push Docker Image
-      runs-on: ubuntu-latest
+  build-and-push-docker-image:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Set up JDK 21
-          uses: actions/setup-java@v4
-          with:
-            distribution: 'corretto'
-            java-version: '21' 
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto'
+          java-version: '21' 
 
-        - name: Build JAR
-          run: mvn package
+      - name: Build JAR
+        run: mvn package
 
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-        - name: Build and push Docker image
-          uses: docker/build-push-action@v6
-          with:
-            context: .
-            push: true
-            tags: ${{ secrets.DOCKER_USERNAME }}/log430:lab0
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/log430:lab0
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
