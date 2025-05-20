@@ -1,3 +1,12 @@
-FROM openjdk:21-jdk-slim
-COPY target/*.jar lab.jar
-ENTRYPOINT ["java","-jar","/lab.jar"]
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /app
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar lab.jar
+ENTRYPOINT ["java","-jar","lab.jar"]
