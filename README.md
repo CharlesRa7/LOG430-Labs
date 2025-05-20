@@ -55,7 +55,7 @@ LOG430-Labs/
     ```
     ./mvnw spring-boot:run
     ```
-3. Après le build et l'exécution, l'application est accessible sur localhost:8080 et on peut recevoir la réponse "Hello World!" de l'API REST en exécutant la commande suivante : 
+3. Après le build et l'exécution, l'application est accessible sur localhost:8080 et on peut recevoir la réponse "Hello World!" de l'API REST en ouvrant un terminal différent et en exécutant la commande suivante : 
     ```
     curl localhost:8080
     ```
