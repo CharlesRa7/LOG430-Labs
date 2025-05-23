@@ -3,9 +3,24 @@ version: '3.8'
 services:
   lab:
     restart: always
+    depends_on:
+      - postgres
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     container_name: lab
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/labdb
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: labdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d

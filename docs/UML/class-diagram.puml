@@ -1,0 +1,46 @@
+@startuml
+
+class User {
+  +id: int
+  +name: string
+  +email: string
+}
+
+class Sale {
+  +id: int
+  +date: Date
+  +items : List<SaleItem>
+  +totalAmount: float
+  +processedBy: User
+}
+
+class Product {
+  +id: int
+  +name: string
+  +price: float
+  +category: string
+  +stockQuantity: int
+}
+
+class SaleItem {
+  +product : Product
+  +quantity: int
+  +subTotal: float
+}
+
+class Return {
+  +id: int
+  +date: Date
+  +items : List<SaleItem>
+  +sale: Sale
+}
+
+Sale "1" o-- "*" SaleItem
+SaleItem "1" --> "1" Product
+Sale "1" --> "1" User : processedBy
+
+Return "1" --> "1" Sale : originalSale
+Return "1" o-- "*" SaleItem : returnedItems
+Return "1" --> "1" User : processedBy
+
+@enduml

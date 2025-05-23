@@ -1,0 +1,22 @@
+@startuml
+title Search Products Sequence Diagram
+
+actor User
+boundary UI
+control ProductController as Controller
+entity ProductService as Service
+entity ProductRepository as Repository
+database DB
+
+User -> UI : searchProduct(query)
+UI -> Controller : searchProduct(query)
+Controller -> Service : searchProduct(query)
+Service -> Repository : findByName(query)
+Repository -> DB : SELECT * FROM products WHERE name LIKE '%query%'
+DB --> Repository : List<Product>
+Repository --> Service : List<Product>
+Service --> Controller : List<Product>
+Controller --> UI : List<Product>
+UI --> User : Display product list
+
+@enduml
