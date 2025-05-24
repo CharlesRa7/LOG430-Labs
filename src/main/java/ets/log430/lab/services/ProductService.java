@@ -26,30 +26,38 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> search(String name, String category) {
+        boolean hasName = name != null && !name.isBlank();
+        boolean hasCategory = category != null && !category.isBlank();
+
         List<Product> products;
-        if (name != null && category != null) {
+        if (hasName && hasCategory) {
             products = productRepository.findByNameContainingIgnoreCaseAndCategoryIgnoreCase(name, category);
-        } else if (name != null) {
+        } else if (hasName) {
             products = productRepository.findByNameContainingIgnoreCase(name);
-        } else if (category != null) {
+        } else if (hasCategory) {
             products = productRepository.findByCategoryIgnoreCase(category);
         } else {
-            products = List.of();
+            products = productRepository.findAll();
         }
         return products.stream()
                 .map(ProductMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public Optional<Product> findById(String id) {
-        return productRepository.findById(id);
+    public ProductResponseDto findById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            return ProductMapper.toDto(productOptional.get());
+        } else {
+            return null;
+        }
     }
 
     public Product save(Product product) {
         return productRepository.save(product);
     }
 
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 }

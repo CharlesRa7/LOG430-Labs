@@ -8,12 +8,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @RestController
 public class HelloController {
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
     @GetMapping("/")
     public String hello() {
-        return jdbcTemplate.queryForObject("SELECT name FROM users WHERE id = 1", String.class);
+        return "Hello World!";
     }
 }
 
