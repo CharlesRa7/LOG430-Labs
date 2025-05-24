@@ -13,7 +13,7 @@
         <input type="text" name="category" placeholder="Category"/>
         <button type="submit">Search</button>
     </form>
-    <form th:action="@{/products/all}" method="get" style="display:inline;">
+    <form th:action="@{/products}" method="get" style="display:inline;">
         <button type="submit">Remove Filters</button>
     </form>
         <form th:action="@{/products/add-form}" method="get" style="display:inline;">
@@ -39,6 +39,12 @@
                 <td th:text="${product.price}"></td>
                 <td th:text="${product.stockQuantity}"></td>
                 <td th:text="${#strings.arrayJoin(product.categories, ', ')}"></td>
+                <td>
+                    <form th:action="@{/products/delete}" method="post" style="display:inline;">
+                        <input type="hidden" name="id" th:value="${product.id}"/>
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

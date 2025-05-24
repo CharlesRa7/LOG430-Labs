@@ -1,6 +1,8 @@
 package ets.log430.lab.entities;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,7 +28,7 @@ public class Product {
         joinColumns = @JoinColumn(name = "product_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<ProductCategory> categories;
+    private List<ProductCategory> categories;
 
     public Product() {}
 
@@ -70,11 +72,11 @@ public class Product {
         this.stockQuantity = stockQuantity;
     }
 
-    public Set<ProductCategory> getCategories() {
+    public List<ProductCategory> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<ProductCategory> categories) {
+    public void setCategories(List<ProductCategory> categories) {
         this.categories = categories;
     }
 }

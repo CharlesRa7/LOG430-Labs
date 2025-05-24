@@ -1,19 +1,16 @@
 package ets.log430.lab.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import ets.log430.lab.dto.ProductAddRequestDto;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ets.log430.lab.services.ProductService;
 import ets.log430.lab.entities.Product;
 import java.util.List;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import ets.log430.lab.dto.ProductResponseDto;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import ets.log430.lab.services.ProductCategoryService;
-import ets.log430.lab.dto.ProductCategoryNameDto;
+import ets.log430.lab.dto.ProductCategoryDto;
 
 @Controller
 @RequestMapping("/products")
@@ -27,7 +24,7 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/all")
+    @GetMapping({"", "/"})
     public String getAllProducts(Model model) {
         List<ProductResponseDto> products = productService.findAll();
         model.addAttribute("products", products);
@@ -43,9 +40,21 @@ public class ProductController {
 
     @GetMapping("/add-form")
     public String showAddProductForm(Model model) {
-        List<ProductCategoryNameDto> categories = categoryService.findAllCategoryNames();
+        List<ProductCategoryDto> categories = categoryService.findAllCategoryNames();
         model.addAttribute("categories", categories);
         return "add-product";
+    }
+
+    @PostMapping("/add")
+    public String addProduct(@ModelAttribute ProductAddRequestDto productAddRequestDto) {
+        productService.save(productAddRequestDto);
+        return "redirect:/products";
+    }
+
+    @PostMapping("/delete")
+    public String deleteProduct(@RequestParam Long id) {
+        productService.deleteById(id);
+        return "redirect:/products";
     }
 
     @GetMapping("/search")

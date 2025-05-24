@@ -20,6 +20,7 @@
         <label for="categories">Categories:</label>
         <select id="categories" name="categoryIds" multiple size="3" required>
             <option th:each="category : ${categories}"
+                    th:value="${category.id}"
                     th:text="${category.name}">
             </option>
         </select><br/><br/>

@@ -1,9 +1,12 @@
 package ets.log430.lab.services;
 
+import ets.log430.lab.dto.ProductAddRequestDto;
 import ets.log430.lab.entities.Product;
+import ets.log430.lab.entities.ProductCategory;
+import ets.log430.lab.mappers.ProductCategoryMapper;
 import ets.log430.lab.repositories.ProductRepository;
 import ets.log430.lab.dto.ProductResponseDto;
-import ets.log430.lab.mapper.ProductMapper;
+import ets.log430.lab.mappers.ProductMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,15 +16,22 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private final ProductCategoryService categoryService;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(
+            ProductRepository productRepository,
+            ProductMapper productMapper,
+            ProductCategoryService categoryService) {
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
+        this.categoryService = categoryService;
     }
 
     public List<ProductResponseDto> findAll() {
         return productRepository.findAll()
                 .stream()
-                .map(ProductMapper::toDto)
+                .map(productMapper::productToResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -40,20 +50,23 @@ public class ProductService {
             products = productRepository.findAll();
         }
         return products.stream()
-                .map(ProductMapper::toDto)
+                .map(productMapper::productToResponseDto)
                 .collect(Collectors.toList());
     }
 
     public ProductResponseDto findById(Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
-            return ProductMapper.toDto(productOptional.get());
+            return productMapper.productToResponseDto(productOptional.get());
         } else {
             return null;
         }
     }
 
-    public Product save(Product product) {
+    public Product save(ProductAddRequestDto productAddRequestDto) {
+        Product product = productMapper.productAddRequestDtoToEntity(productAddRequestDto);
+        List<ProductCategory> categories = categoryService.findAllById(productAddRequestDto.getCategoryIds());
+        product.setCategories(categories);
         return productRepository.save(product);
     }
 
