@@ -18,8 +18,13 @@ class Product {
   +id: int
   +name: string
   +price: float
-  +category: string
+  +category: List<ProductCategory>
   +stockQuantity: int
+}
+
+class ProductCategory {
+  +id: int
+  +name: string
 }
 
 class SaleItem {
@@ -42,5 +47,7 @@ Sale "1" --> "1" User : processedBy
 Return "1" --> "1" Sale : originalSale
 Return "1" o-- "*" SaleItem : returnedItems
 Return "1" --> "1" User : processedBy
+
+Product "*" -- "*" ProductCategory : categories
 
 @enduml
