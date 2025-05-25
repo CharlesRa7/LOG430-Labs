@@ -9,7 +9,7 @@ class User {
 class Sale {
   +id: int
   +date: Date
-  +items : List<SaleItem>
+  +items : List<SaleProduct>
   +totalAmount: float
   +processedBy: User
 }
@@ -27,7 +27,7 @@ class ProductCategory {
   +name: string
 }
 
-class SaleItem {
+class SaleProduct {
   +product : Product
   +quantity: int
   +subTotal: float
@@ -36,16 +36,16 @@ class SaleItem {
 class Return {
   +id: int
   +date: Date
-  +items : List<SaleItem>
+  +items : List<SaleProduct>
   +sale: Sale
 }
 
-Sale "1" o-- "*" SaleItem
-SaleItem "1" --> "1" Product
+Sale "1" o-- "*" SaleProduct : items
+SaleProduct "1" --> "1" Product
 Sale "1" --> "1" User : processedBy
 
 Return "1" --> "1" Sale : originalSale
-Return "1" o-- "*" SaleItem : returnedItems
+Return "1" o-- "*" SaleProduct : returnedItems
 Return "1" --> "1" User : processedBy
 
 Product "*" -- "*" ProductCategory : categories

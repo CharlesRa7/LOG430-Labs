@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "sales")
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +15,7 @@ public class Sale {
     private Date date;
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
-    private List<SaleItem> items;
+    private List<SaleProduct> items;
 
     private Float totalAmount;
 
@@ -39,11 +40,11 @@ public class Sale {
         this.date = date;
     }
 
-    public List<SaleItem> getItems() {
+    public List<SaleProduct> getItems() {
         return items;
     }
 
-    public void setItems(List<SaleItem> items) {
+    public void setItems(List<SaleProduct> items) {
         this.items = items;
     }
 

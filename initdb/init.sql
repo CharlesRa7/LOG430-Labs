@@ -23,9 +23,20 @@ CREATE TABLE IF NOT EXISTS sales_products (
     sale_id INT NOT NULL,
     product_id INT NOT NULL,
     quantity INT NOT NULL,
+    sub_total DOUBLE PRECISION NOT NULL,
     PRIMARY KEY (sale_id, product_id),
     FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS returns (
+    id SERIAL PRIMARY KEY,
+    sale_id INT NOT NULL,
+    user_id INT NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS product_categories (
@@ -63,11 +74,11 @@ INSERT INTO sales (user_id, total_amount) VALUES
 (2, 35.50)
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO sales_products (sale_id, product_id, quantity) VALUES
-(1, 1, 1),  -- Alice bought 1 Laptop
-(1, 2, 2),  -- Alice bought 2 T-Shirts
-(2, 3, 2)  -- Bob bought 2 Novels
-ON CONFLICT (sale_id, product_id) DO NOTHING;
+INSERT INTO sales_products (sale_id, product_id, quantity, sub_total) VALUES
+(1, 1, 1, 1200.00),  -- Alice bought 1 Laptop
+(1, 2, 2, 40.00),    -- Alice bought 2 T-Shirts
+(2, 3, 2, 31.00)     -- Bob bought 2 Novels
+ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO products_product_categories (product_id, category_id) VALUES
 (1, 1), -- Laptop is Electronics

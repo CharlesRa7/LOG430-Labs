@@ -1,30 +1,34 @@
 package ets.log430.lab.entities;
 
 import jakarta.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "returns")
 public class Return {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
-
-    @OneToMany
-    private List<SaleItem> returnedItems;
-
-    @OneToOne
-    @JoinColumn(name = "sale_id")
-    private Sale originalSale;
+    @ManyToOne
+    @JoinColumn(name = "sale_id", nullable = false)
+    private Sale sale;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User processedBy;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    // Getters and Setters
+    @Column(nullable = false)
+    private LocalDateTime date;
+
+    @Column(name = "total_amount", nullable = false)
+    private double totalAmount;
+
+    public Return() {}
+
+    // Getters and setters
+
     public Long getId() {
         return id;
     }
@@ -33,35 +37,35 @@ public class Return {
         this.id = id;
     }
 
-    public Date getDate() {
+    public Sale getSale() {
+        return sale;
+    }
+
+    public void setSale(Sale sale) {
+        this.sale = sale;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public List<SaleItem> getReturnedItems() {
-        return returnedItems;
+    public double getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setReturnedItems(List<SaleItem> returnedItems) {
-        this.returnedItems = returnedItems;
-    }
-
-    public Sale getOriginalSale() {
-        return originalSale;
-    }
-
-    public void setOriginalSale(Sale originalSale) {
-        this.originalSale = originalSale;
-    }
-
-    public User getProcessedBy() {
-        return processedBy;
-    }
-
-    public void setProcessedBy(User processedBy) {
-        this.processedBy = processedBy;
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }

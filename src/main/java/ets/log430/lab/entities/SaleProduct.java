@@ -3,29 +3,33 @@ package ets.log430.lab.entities;
 import jakarta.persistence.*;
 
 @Entity
-public class SaleItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Table(name = "sales_products")
+public class SaleProduct {
+    @EmbeddedId
+    private SaleProductId id = new SaleProductId();
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-
-    private Integer quantity;
-
-    private Float subTotal;
-
-    @ManyToOne
+    @MapsId("saleId")
     @JoinColumn(name = "sale_id")
     private Sale sale;
 
+    @ManyToOne
+    @MapsId("productId")
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @Column(nullable = false)
+    private int quantity;
+
+    @Column(name = "sub_total", nullable = false)
+    private double subTotal;
+
     // Getters and Setters
-    public Long getId() {
+    public SaleProductId getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(SaleProductId id) {
         this.id = id;
     }
 
@@ -45,11 +49,11 @@ public class SaleItem {
         this.quantity = quantity;
     }
 
-    public Float getSubTotal() {
+    public double getSubTotal() {
         return subTotal;
     }
 
-    public void setSubTotal(Float subTotal) {
+    public void setSubTotal(double subTotal) {
         this.subTotal = subTotal;
     }
 
