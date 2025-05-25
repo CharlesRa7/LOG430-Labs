@@ -1,0 +1,53 @@
+@startuml
+title Get Product by ID
+
+actor User
+participant API
+control ProductController
+control ProductService
+control "ProductMapper" as ProductMapper
+database ProductRepository as Repo
+database Database
+
+User -> API : GET /products/{id}
+activate API
+
+API -> ProductController : getProduct(id)
+activate ProductController
+
+ProductController -> ProductService : findById(id)
+activate ProductService
+
+ProductService -> Repo : findById(id)
+activate Repo
+
+Repo -> Database : SELECT * FROM products\nWHERE id = ?
+activate Database
+Database --> Repo : Product
+deactivate Database
+
+Repo --> ProductService : Optional<Product>
+deactivate Repo
+
+alt Product Found
+    ProductService -> ProductMapper : productToResponseDto(product)
+    activate ProductMapper
+    ProductMapper --> ProductService : ProductResponseDto
+    deactivate ProductMapper
+    ProductService --> ProductController : ProductResponseDto
+else Product Not Found
+    ProductService --> ProductController : null
+end
+deactivate ProductService
+
+alt Product Found
+    ProductController --> API : ResponseEntity<ProductResponseDto>
+else Product Not Found
+    ProductController --> API : ResponseEntity.notFound()
+end
+deactivate ProductController
+
+API --> User : Page with product details\n or Page with message "Product not found"
+deactivate API
+
+@enduml

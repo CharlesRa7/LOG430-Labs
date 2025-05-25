@@ -1,0 +1,40 @@
+@startuml
+title Delete Product
+
+actor User
+participant API
+control ProductController
+control "ProductService" as ProductService
+database ProductRepository as Repo
+database Database
+
+User -> API : DELETE /products/{id}
+activate API
+
+API -> ProductController : deleteProduct(id)
+activate ProductController
+
+ProductController -> ProductService : deleteById(id)
+activate ProductService
+
+ProductService -> Repo : deleteById(id)
+activate Repo
+
+Repo -> Database : DELETE FROM products\nWHERE id = ?
+activate Database
+Database --> Repo : Confirmation
+deactivate Database
+
+Repo --> ProductService : void
+deactivate Repo
+
+ProductService --> ProductController : void
+deactivate ProductService
+
+ProductController --> API : ResponseEntity<Void>
+deactivate ProductController
+
+API --> User : Show list of products without deleted product
+deactivate API
+
+@enduml

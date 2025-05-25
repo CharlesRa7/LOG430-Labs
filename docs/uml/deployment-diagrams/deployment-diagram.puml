@@ -1,0 +1,19 @@
+@startuml
+skinparam componentStyle uml2
+
+node "Application Server" {
+    component [Thymeleaf Engine] as thymeleaf
+    component [Controllers] as ctrl
+    component [Services] as svc
+    component [Repositories] as repo
+}
+
+node "Database Server" {
+    database "PostgreSQL" as postgres
+}
+
+thymeleaf --> ctrl
+ctrl --> svc
+svc --> repo
+repo --> postgres
+@enduml

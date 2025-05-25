@@ -1,0 +1,47 @@
+@startuml
+title Add Product
+
+actor User
+participant API
+control ProductController
+control "ProductService" as ProductService
+control "ProductMapper" as ProductMapper
+database ProductRepository as Repo
+database Database
+
+User -> API : POST /products/add
+activate API
+
+API -> ProductController : addProduct(ProductDTO)
+activate ProductController
+
+ProductController -> ProductService : save(ProductDTO)
+activate ProductService
+
+ProductService -> ProductMapper : toEntity(ProductDTO)
+activate ProductMapper
+
+ProductMapper --> ProductService : Product
+deactivate ProductMapper
+
+ProductService -> Repo : save(Product)
+activate Repo
+
+Repo -> Database : INSERT INTO products
+activate Database
+Database --> Repo : Product ID
+deactivate Database
+
+Repo --> ProductService : savedProduct
+deactivate Repo
+
+ProductService --> ProductController : Product
+deactivate ProductService
+
+ProductController --> API : ResponseEntity<Product>
+deactivate ProductController
+
+API --> User : Show list of products with new product
+deactivate API
+
+@enduml

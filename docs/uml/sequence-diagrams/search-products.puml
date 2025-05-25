@@ -1,0 +1,47 @@
+@startuml
+title Product Search
+
+actor User
+participant API
+control ProductController
+control ProductService
+control "ProductMapper" as ProductMapper
+database ProductRepository as Repo
+database Database
+
+User -> API : GET /products/search?query=term
+activate API
+
+API -> ProductController : searchProducts(query)
+activate ProductController
+
+ProductController -> ProductService : searchProducts(query)
+activate ProductService
+
+ProductService -> Repo : findByNameOrCategory(query)
+activate Repo
+
+Repo -> Database : SELECT * FROM products\nWHERE name LIKE '%term%'\n OR category LIKE '%term%'
+activate Database
+Database --> Repo : Result Set
+deactivate Database
+
+Repo --> ProductService : List<Product>
+deactivate Repo
+
+ProductService -> ProductMapper : toDTO(List<Product>)
+activate ProductMapper
+
+ProductMapper --> ProductService : List<ProductDTO>
+deactivate ProductMapper
+
+ProductService --> ProductController : List<ProductDTO>
+deactivate ProductService
+
+ProductController --> API : ResponseEntity<List<ProductDTO>>
+deactivate ProductController
+
+API --> User : Show filtered list of products
+deactivate API
+
+@enduml
