@@ -21,8 +21,8 @@ services:
     image: postgres:latest
     container_name: postgres
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: log430
+      POSTGRES_PASSWORD: log430
       POSTGRES_DB: labdb
     ports:
       - "5433:5432"
