@@ -10,7 +10,13 @@ services:
       - "8080:8080"
     container_name: lab
     environment:
-      DB_URL: jdbc:postgresql://postgres:5432/labdb
+      DB_URL: ${DB_URL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SPRING_PROFILES_ACTIVE: prod
+
+    volumes:
+      - /src/main/resources/application-prod.properties:/app/config/application-prod.properties
   postgres:
     image: postgres:latest
     container_name: postgres
