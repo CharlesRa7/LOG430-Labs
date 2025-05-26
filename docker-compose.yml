@@ -10,9 +10,9 @@ services:
       - "8080:8080"
     container_name: lab
     environment:
-      DB_URL: ${DB_URL}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_URL: jdbc:postgresql://postgres:5432/labdb
+      DB_USER: log430
+      DB_PASSWORD: log430
       SPRING_PROFILES_ACTIVE: prod
 
     volumes:
@@ -25,7 +25,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: labdb
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
