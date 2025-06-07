@@ -1,44 +1,127 @@
 @startuml
 
-class User {
-  +id: int
-  +name: string
-  +email: string
+package "User Domain" {
+  class User {
+    +id: Long
+    +name: string
+    +email: string
+  }
 }
 
-class Sale {
-  +id: int
-  +date: Date
-  +items : List<SaleProduct>
-  +totalAmount: float
-  +processedBy: User
+package "Sales Domain" {
+    class Sale {
+      +id: Long
+      +date: Date
+      +items : List<SaleProduct>
+      +totalAmount: float
+      +processedBy: User
+    }
+
+    class SaleProduct {
+      +product : Product
+      +quantity: int
+      +subTotal: float
+    }
+
+    class Return {
+      +id: Long
+      +date: Date
+      +items : List<SaleProduct>
+      +sale: Sale
+    }
 }
 
-class Product {
-  +id: int
-  +name: string
-  +price: float
-  +category: List<ProductCategory>
-  +stockQuantity: int
+package "Product Domain" {
+    class Product {
+      +id: Long
+      +name: string
+      +price: float
+      +category: List<ProductCategory>
+    }
+
+    class ProductCategory {
+      +id: Long
+      +name: string
+    }
 }
 
-class ProductCategory {
-  +id: int
-  +name: string
+package "Store Domain" {
+    class Store {
+      +id: Long
+      +name: string
+    }
+
+    class StoreSalesMetric {
+      +store: Store
+      +totalSales: BigDecimal
+      +weeklySales: BigDecimal
+    }
+
+    class StoreInventory {
+      +id: Long
+      +quantity: int
+      +minThreshold: int
+      +maxThreshold: int
+    }
+
+    class StoreProductMetrics {
+        +id: Long
+        +store: Store
+        +product: Product
+        +quantitySold: int
+        +revenue: BigDecimal
+    }
 }
 
-class SaleProduct {
-  +product : Product
-  +quantity: int
-  +subTotal: float
+package "Logistics Domain" {
+    class LogisticsCenter {
+      +id: Long
+      +name: string
+    }
+
+    class LogisticsCenterInventory {
+        +id: Long
+        +logisticsCenter: LogisticsCenter
+        +product: Product
+        +quantity: int
+    }
+
+    class SupplyRequest {
+        +id: Long
+        +store: Store
+        +logisticsCenter: LogisticsCenter
+        +product: Product
+        +quantityRequested: int
+        +status: Enum { PENDING, APPROVED, DELIVERED, REJECTED, CANCELLED }
+    }
 }
 
-class Return {
-  +id: int
-  +date: Date
-  +items : List<SaleProduct>
-  +sale: Sale
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+' New relationships
+Store "1" o-- "*" Sale : sales
+Store "1" o-- "*" StoreInventory : inventory
+StoreInventory "1" --> "1" Product : product
+Store "1" o-- "*" StoreProductMetrics : productMetrics
+StoreProductMetrics "1" --> "1" Product : product
+Store "1" --> "1" StoreSalesMetric : salesMetrics
+LogisticsCenter "1" o-- "*" LogisticsCenterInventory : inventory
+LogisticsCenterInventory "1" --> "1" Product : product
+
+Store "1" <- "*" SupplyRequest : requestingStore
+LogisticsCenter "1" <- "*" SupplyRequest : targetCenter
+Product "1" <- "*" SupplyRequest : requestedProduct
 
 Sale "1" o-- "*" SaleProduct : items
 SaleProduct "1" --> "1" Product

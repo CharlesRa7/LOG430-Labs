@@ -1,4 +1,4 @@
-package ets.log430.lab.entities;
+package ets.log430.lab.models.product;
 
 import jakarta.persistence.*;
 import java.util.Set;

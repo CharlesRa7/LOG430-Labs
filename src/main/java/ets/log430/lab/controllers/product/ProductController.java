@@ -1,16 +1,16 @@
-package ets.log430.lab.controllers;
+package ets.log430.lab.controllers.product;
 
-import ets.log430.lab.dto.ProductAddRequestDto;
+import ets.log430.lab.models.dto.ProductAddRequestDto;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import ets.log430.lab.services.ProductService;
-import ets.log430.lab.entities.Product;
+import ets.log430.lab.services.product.ProductService;
+
 import java.util.List;
 
-import ets.log430.lab.dto.ProductResponseDto;
+import ets.log430.lab.models.dto.ProductResponseDto;
 import org.springframework.ui.Model;
-import ets.log430.lab.services.ProductCategoryService;
-import ets.log430.lab.dto.ProductCategoryDto;
+import ets.log430.lab.services.product.ProductCategoryService;
+import ets.log430.lab.models.dto.ProductCategoryDto;
 
 @Controller
 @RequestMapping("/products")

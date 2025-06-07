@@ -1,4 +1,4 @@
-package ets.log430.lab.entities;
+package ets.log430.lab.models.sales;
 
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;

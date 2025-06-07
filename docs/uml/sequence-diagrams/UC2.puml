@@ -1,0 +1,46 @@
+@startuml
+title UC02 - Consult Central Stock and Create Supply Request
+autonumber
+
+actor Employee as e
+participant "LogisticsCenterController" as lcc
+participant "LogisticsCenterService" as lcs
+participant "SupplyRequestService" as srs
+participant "LogisticsCenterInventoryRepository" as lcr
+participant "SupplyRequestRepository" as sr
+database "PostgreSQL" as db
+
+e -> lcc: Request to consult central stock
+activate lcc
+lcc -> lcs: consultCentralStock()
+activate lcs
+lcs -> lcr: findAll()
+activate lcr
+lcr -> db: SELECT * FROM logistics_center_inventory
+activate db
+db --> lcr: List of logistics center inventory
+deactivate db
+lcr --> lcs: List of logistics center inventory
+deactivate lcr
+lcs -> lcc: List of logistics center inventory
+deactivate lcs
+lcc --> e: Return central stock
+deactivate lcc
+e -> lcc: Request to create supply request
+activate lcc
+lcc -> srs: createSupplyRequest()
+activate srs
+srs-> sr: save(supplyRequest)
+activate sr
+sr -> db: INSERT INTO supply_requests VALUES (supplyRequestDetails)
+activate db
+db --> sr: Confirmation of supply request creation
+deactivate db
+sr --> srs: SupplyRequest saved
+deactivate sr
+srs --> lcc: Supply request created successfully
+deactivate srs
+lcc --> e: Confirmation of supply request creation
+deactivate lcc
+
+@enduml

@@ -1,6 +1,6 @@
-package ets.log430.lab.repositories;
+package ets.log430.lab.repositories.product;
 
-import ets.log430.lab.entities.Product;
+import ets.log430.lab.models.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

@@ -1,5 +1,6 @@
-package ets.log430.lab.entities;
+package ets.log430.lab.models.sales;
 
+import ets.log430.lab.models.user.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

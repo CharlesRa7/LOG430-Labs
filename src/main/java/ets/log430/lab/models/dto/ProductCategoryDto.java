@@ -1,4 +1,4 @@
-package ets.log430.lab.dto;
+package ets.log430.lab.models.dto;
 
 
 public class ProductCategoryDto {

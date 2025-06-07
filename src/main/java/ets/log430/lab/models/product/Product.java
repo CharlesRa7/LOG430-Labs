@@ -1,9 +1,8 @@
-package ets.log430.lab.entities;
+package ets.log430.lab.models.product;
 
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -19,9 +18,6 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @Column(name = "stock_quantity", nullable = false)
-    private int stockQuantity;
-
     @ManyToMany
     @JoinTable(
         name = "products_product_categories",
@@ -35,7 +31,6 @@ public class Product {
     public Product(String name, double price, int stockQuantity) {
         this.name = name;
         this.price = price;
-        this.stockQuantity = stockQuantity;
     }
 
     // Getters and setters
@@ -62,14 +57,6 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public int getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
     }
 
     public List<ProductCategory> getCategories() {

@@ -1,11 +1,10 @@
-package ets.log430.lab.services;
+package ets.log430.lab.services.product;
 
-import ets.log430.lab.dto.ProductAddRequestDto;
-import ets.log430.lab.entities.Product;
-import ets.log430.lab.entities.ProductCategory;
-import ets.log430.lab.mappers.ProductCategoryMapper;
-import ets.log430.lab.repositories.ProductRepository;
-import ets.log430.lab.dto.ProductResponseDto;
+import ets.log430.lab.models.dto.ProductAddRequestDto;
+import ets.log430.lab.models.product.Product;
+import ets.log430.lab.models.product.ProductCategory;
+import ets.log430.lab.repositories.product.ProductRepository;
+import ets.log430.lab.models.dto.ProductResponseDto;
 import ets.log430.lab.mappers.ProductMapper;
 import org.springframework.stereotype.Service;
 

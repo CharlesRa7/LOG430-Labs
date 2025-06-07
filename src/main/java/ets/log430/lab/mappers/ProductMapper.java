@@ -1,14 +1,12 @@
 package ets.log430.lab.mappers;
 
-import ets.log430.lab.dto.ProductAddRequestDto;
-import ets.log430.lab.dto.ProductCategoryDto;
-import ets.log430.lab.entities.Product;
-import ets.log430.lab.entities.ProductCategory;
-import ets.log430.lab.dto.ProductResponseDto;
+import ets.log430.lab.models.dto.ProductAddRequestDto;
+import ets.log430.lab.models.product.Product;
+import ets.log430.lab.models.product.ProductCategory;
+import ets.log430.lab.models.dto.ProductResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ProductMapper {
@@ -23,7 +21,7 @@ public class ProductMapper {
                 .map(ProductCategory::getName)
                 .toList();
 
-        return new ProductResponseDto(entity.getId(), entity.getName(), entity.getPrice(), entity.getStockQuantity(),categoryNames);
+        return new ProductResponseDto(entity.getId(), entity.getName(), entity.getPrice(),categoryNames);
     }
 
     public Product productAddRequestDtoToEntity(ProductAddRequestDto dto) {
@@ -34,7 +32,6 @@ public class ProductMapper {
         Product product = new Product();
         product.setName(dto.getName());
         product.setPrice(dto.getPrice());
-        product.setStockQuantity(dto.getStockQuantity());
 
         return product;
     }

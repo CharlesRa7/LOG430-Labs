@@ -1,0 +1,33 @@
+@startuml
+title UC01 - Generate Store Sales Report
+autonumber
+
+actor Manager as m
+participant "StoreController" as sc
+participant "StoreService" as ss
+participant "StoreMetricsDto" as smd
+participant "StoreRepository" as sr
+database "PostgreSQL" as db
+
+m -> sc: Request to generate report
+activate sc
+sc -> ss: generateReport()
+activate ss
+ss -> sr: findAll()
+activate sr
+sr -> db: SELECT * FROM stores
+activate db
+db --> sr: List of stores
+deactivate db
+sr --> ss: List of stores
+deactivate sr
+ss -> smd: toDto(stores)
+activate smd
+smd --> ss: StoreMetricsDto
+deactivate smd
+ss --> sc: List of StoreMetricsDto
+deactivate ss
+sc --> m: Return report
+deactivate sc
+
+@enduml

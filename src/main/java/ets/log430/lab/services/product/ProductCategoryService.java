@@ -1,9 +1,9 @@
-package ets.log430.lab.services;
+package ets.log430.lab.services.product;
 
-import ets.log430.lab.dto.ProductCategoryDto;
-import ets.log430.lab.entities.ProductCategory;
+import ets.log430.lab.models.dto.ProductCategoryDto;
+import ets.log430.lab.models.product.ProductCategory;
 import ets.log430.lab.mappers.ProductCategoryMapper;
-import ets.log430.lab.repositories.ProductCategoryRepository;
+import ets.log430.lab.repositories.product.ProductCategoryRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;

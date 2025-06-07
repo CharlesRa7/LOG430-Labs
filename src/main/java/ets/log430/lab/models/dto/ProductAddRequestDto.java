@@ -1,52 +1,51 @@
-package ets.log430.lab.dto;
+package ets.log430.lab.models.dto;
 
-import jakarta.persistence.*;
-import java.util.Set;
 import java.util.List;
 
-public class ProductResponseDto {
-    private Long id;
+public class ProductAddRequestDto {
     private String name;
     private double price;
     private int stockQuantity;
-    private List<String> categories;
+    private List<Long> categoryIds;
 
-    public ProductResponseDto() {}
-    public ProductResponseDto(Long id, String name, double price, int stockQuantity, List<String> categories) {
-        this.id = id;
+    public ProductAddRequestDto() {}
+
+    public ProductAddRequestDto(String name, double price, int stockQuantity, List<Long> categoryIds) {
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
-        this.categories = categories;
+        this.categoryIds = categoryIds;
     }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public double getPrice() {
         return price;
     }
+
     public void setPrice(double price) {
         this.price = price;
     }
+
     public int getStockQuantity() {
         return stockQuantity;
     }
+
     public void setStockQuantity(int stockQuantity) {
         this.stockQuantity = stockQuantity;
     }
-    public List<String> getCategories() {
-        return categories;
+
+    public List<Long> getCategoryIds() {
+        return categoryIds;
     }
-    public void setCategories(List<String> categories) {
-        this.categories = categories;
+
+    public void setCategoryIds(List<Long> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 }

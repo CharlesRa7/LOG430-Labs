@@ -13,10 +13,10 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/labdb
       DB_USER: log430
       DB_PASSWORD: log430
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: dev
 
     volumes:
-      - /src/main/resources/application-prod.properties:/app/config/application-prod.properties
+      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
   postgres:
     image: postgres:latest
     container_name: postgres
