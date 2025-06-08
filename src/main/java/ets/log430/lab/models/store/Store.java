@@ -1,5 +1,6 @@
 package ets.log430.lab.models.store;
 
+import ets.log430.lab.models.logistics.SupplyRequest;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -30,6 +31,10 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<StoreProductMetrics> productMetrics = new HashSet<>();
 
+    @OneToMany(mappedBy = "store")
+    private Set<SupplyRequest> supplyRequests = new HashSet<>();
+
+
     public Store() {}
 
     // Getters and setters
@@ -45,4 +50,6 @@ public class Store {
     public void setInventory(Set<StoreInventory> inventory) { this.inventory = inventory; }
     public Set<StoreProductMetrics> getProductMetrics() { return productMetrics; }
     public void setProductMetrics(Set<StoreProductMetrics> productMetrics) { this.productMetrics = productMetrics; }
+    public Set<SupplyRequest> getSupplyRequests() { return supplyRequests; }
+    public void setSupplyRequests(Set<SupplyRequest> supplyRequests) { this.supplyRequests = supplyRequests;}
 }

@@ -1,5 +1,9 @@
 @startuml
-title UC01 - Generate Store Sales Report
+skinparam title {
+  FontColor #66BB66
+}
+
+title UC1 - Generate Store Sales Report
 autonumber
 
 actor Manager as m

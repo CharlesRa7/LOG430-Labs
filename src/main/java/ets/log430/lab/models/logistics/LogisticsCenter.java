@@ -18,6 +18,9 @@ public class LogisticsCenter {
     @OneToMany(mappedBy = "logisticsCenter", cascade = CascadeType.ALL)
     private Set<LogisticsCenterInventory> inventory = new HashSet<>();
 
+    @OneToMany(mappedBy = "store")
+    private Set<SupplyRequest> supplyRequests = new HashSet<>();
+
     public LogisticsCenter() {}
 
     // Getters and setters
@@ -27,4 +30,6 @@ public class LogisticsCenter {
     public void setName(String name) { this.name = name; }
     public Set<LogisticsCenterInventory> getInventory() { return inventory; }
     public void setInventory(Set<LogisticsCenterInventory> inventory) { this.inventory = inventory; }
+    public Set<SupplyRequest> getSupplyRequests() { return supplyRequests; }
+    public void setSupplyRequests(Set<SupplyRequest> supplyRequests) { this.supplyRequests = supplyRequests;}
 }

@@ -1,8 +1,11 @@
 package ets.log430.lab.models.product;
 
+import ets.log430.lab.models.logistics.SupplyRequest;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -17,6 +20,9 @@ public class Product {
 
     @Column(nullable = false)
     private double price;
+
+    @OneToMany(mappedBy = "product")
+    private Set<SupplyRequest> supplyRequests = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -65,5 +71,13 @@ public class Product {
 
     public void setCategories(List<ProductCategory> categories) {
         this.categories = categories;
+    }
+
+    public Set<SupplyRequest> getSupplyRequests() {
+        return supplyRequests;
+    }
+
+    public void setSupplyRequests(Set<SupplyRequest> supplyRequests) {
+        this.supplyRequests = supplyRequests;
     }
 }

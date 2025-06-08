@@ -1,0 +1,38 @@
+@startuml
+skinparam title {
+  FontColor #FF6961
+}
+
+title UC3 - Visualize Store Performance Metrics
+autonumber
+
+actor Manager as m
+participant "StoreController" as sc
+participant "StoreService" as ss
+participant "StoreSalesMetricMapper" as ssmm
+participant "StoreSalesMetricRepository" as ssmr
+
+database "PostgreSQL" as db
+
+m -> sc: Request to visualize all stores performance metrics
+activate sc
+sc -> ss: getAllStoresPerformance()
+activate ss
+ss -> ssmr: findAll()
+activate ssmr
+ssmr -> db: SELECT * FROM store_sales_metrics
+activate db
+db --> ssmr: List of store performance metrics
+deactivate db
+ssmr --> ss: List of store performance metrics
+deactivate ssmr
+ss -> ssmm: toDto(storeSalesMetrics)
+activate ssmm
+ssmm --> ss: List of StoreSalesMetricDto
+deactivate ssmm
+ss --> sc: List of StoreSalesMetricDto
+deactivate ss
+sc --> m: Return store performance metrics
+deactivate sc
+
+@enduml

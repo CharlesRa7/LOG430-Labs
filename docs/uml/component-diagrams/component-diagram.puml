@@ -1,0 +1,95 @@
+@startuml
+skinparam componentStyle uml2
+skinparam component {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+}
+
+package "Presentation Layer" {
+    [StoreController]
+    [ProductController]
+    [LogisticsCenterController]
+    [SalesController]
+}
+
+package "Service Layer" {
+    [StoreService]
+    [ProductService]
+    [LogisticsCenterService]
+    [SupplyRequestService]
+    [SalesService]
+}
+
+package "Domain Model" {
+    package "Store Domain" {
+        [Store]
+        [StoreInventory]
+        [StoreSalesMetric]
+        [StoreProductMetrics]
+    }
+
+    package "Product Domain" {
+        [Product]
+        [ProductCategory]
+    }
+
+    package "Sales Domain" {
+        [Sale]
+        [SaleProduct]
+        [Return]
+    }
+
+    package "Logistics Domain" {
+        [LogisticsCenter]
+        [LogisticsCenterInventory]
+        [SupplyRequest]
+    }
+}
+
+package "Repository Layer" {
+    [StoreRepository]
+    [ProductRepository]
+    [LogisticsCenterRepository]
+    [SupplyRequestRepository]
+    [SalesRepository]
+}
+
+database "PostgreSQL" {
+    [Database]
+}
+
+' Controller -> Service dependencies
+StoreController --> StoreService
+ProductController --> ProductService
+LogisticsCenterController --> LogisticsCenterService
+LogisticsCenterController --> SupplyRequestService
+SalesController --> SalesService
+
+' Service -> Domain Model dependencies
+StoreService --> Store
+ProductService --> Product
+LogisticsCenterService --> LogisticsCenter
+SupplyRequestService --> SupplyRequest
+SalesService --> Sale
+
+' Service -> Repository dependencies
+StoreService --> StoreRepository
+ProductService --> ProductRepository
+LogisticsCenterService --> LogisticsCenterRepository
+SupplyRequestService --> SupplyRequestRepository
+SalesService --> SalesRepository
+
+' Cross-service dependencies
+SupplyRequestService --> StoreService
+SupplyRequestService --> ProductService
+SupplyRequestService --> LogisticsCenterService
+
+' Repository -> Database dependencies
+StoreRepository --> Database
+ProductRepository --> Database
+LogisticsCenterRepository --> Database
+SupplyRequestRepository --> Database
+SalesRepository --> Database
+
+@enduml

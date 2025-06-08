@@ -1,5 +1,9 @@
 @startuml
-title UC02 - Consult Central Stock and Create Supply Request
+skinparam title {
+  FontColor #66BB66
+}
+
+title UC2 - Consult Central Stock and Create Supply Request
 autonumber
 
 actor Employee as e

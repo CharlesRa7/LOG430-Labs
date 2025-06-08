@@ -1,0 +1,39 @@
+@startuml
+left to right direction
+
+:Employé: as e
+:Gestionnaire: as g
+:Responsable Logistique: as r
+
+skinparam usecase {
+  BackgroundColor<<Implémenté>> #66BB66
+  BackgroundColor<<NonImplémenté>> #FF6961
+  BorderColor black
+}
+
+
+rectangle Système {
+    usecase "UC1 – Générer un rapport consolidé des ventes" as uc1 <<Implémenté>>
+    (UC1 – Générer un rapport consolidé des ventes) as uc1
+    usecase "UC2 – Consulter le stock central et déclencher un réapprovisionnement" as uc2 <<Implémenté>>
+    usecase "UC3 – Visualiser les performances des magasins dans un tableau de bord" as uc3 <<NonImplémenté>>
+    usecase "UC4 - Mettre à jour les produits depuis la maison mère)" as uc4 <<NonImplémenté>>
+    usecase "UC6 – Approvisionner un magasin depuis le centre logistique" as uc6 <<NonImplémenté>>
+    usecase "UC7 – Alerter automatiquement la maison mère en cas de rupture critique" as uc7 <<NonImplémenté>>
+    usecase "UC8 – Offrir une interface web minimale pour les gestionnaires" as uc8 <<NonImplémenté>>
+}
+
+g -- uc1
+g -- uc3
+g -- uc7
+g -- uc8
+r -- uc4
+r -- uc6
+e -- uc2
+
+legend left
+|= Couleur |= Signification |
+|<#66BB66> Implémenté| Cas d'utilisation implémenté |
+|<#FF6961> Non implémenté| Cas d'utilisation non implémenté |
+endlegend
+@enduml

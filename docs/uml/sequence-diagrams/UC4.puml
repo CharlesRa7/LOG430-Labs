@@ -1,0 +1,41 @@
+@startuml
+skinparam title {
+  FontColor #FF6961
+}
+
+title UC4 - Update Product Details
+autonumber
+
+actor "Logistics Manager" as lm
+participant "ProductController" as pc
+participant "ProductService" as ps
+participant "ProductRepository" as pr
+database "PostgreSQL" as db
+
+lm -> pc: Request to update product details
+activate pc
+pc -> ps: updateProductDetails(productId, productDetails)
+activate ps
+ps -> pr: findById(productId)
+activate pr
+pr -> db: SELECT * FROM products WHERE id = productId
+activate db
+db --> pr: Product details
+deactivate db
+pr --> ps: Product entity
+deactivate pr
+ps -> ps: validateProductDetails(productDetails)
+ps -> pr: save(productEntity)
+activate pr
+pr -> db: UPDATE products SET details = productDetails WHERE id = productId
+activate db
+db --> pr: Confirmation of product update
+deactivate db
+pr --> ps: Updated product entity
+deactivate pr
+ps --> pc: Product updated successfully
+deactivate ps
+pc --> lm: Confirmation of product update
+deactivate pc
+
+@enduml

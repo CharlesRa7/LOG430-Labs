@@ -1,0 +1,60 @@
+@startuml
+skinparam title {
+  FontColor #FF6961
+}
+
+title UC6 - Restock a store from the logistics center
+autonumber
+
+actor "Logistics Manager" as lm
+participant "LogisticsCenterController" as lcc
+participant "SupplyRequestService" as srs
+participant "LogisticsCenterService" as lcs
+participant "StoreService" as ss
+participant "StoreRepository" as sr
+participant "LogisticsCenterRepository" as lcr
+participant "SupplyRequestRepository" as srr
+database "PostgreSQL" as db
+
+lm -> lcc: Validate supply request
+activate lcc
+lcc -> srs: validateSupplyRequest(supplyRequestId)
+activate srs
+srs -> srr: save(supplyRequestEntity)
+activate srr
+srr -> db: UPDATE supply_requests \nSET status = 'APPROVED' \nWHERE id = supplyRequestId
+activate db
+db --> srr: Confirmation of supply request validation
+deactivate db
+srr --> srs: SupplyRequest updated
+deactivate srr
+srs -> lcs : updateStock(productId, quantity)
+activate lcs
+lcs -> lcr: save(logisticsCenterInventoryEntity)
+activate lcr
+lcr -> db: UPDATE logistics_center_inventory \nSET quantity = quantity - requestedQuantity \nWHERE product_id = productId
+activate db
+db --> lcr: Confirmation of stock update
+deactivate db
+lcr --> lcs: LogisticsCenterInventory updated
+deactivate lcr
+lcs --> srs: Stock updated successfully
+deactivate lcs
+srs -> ss : updateStock(productId, quantity)
+activate ss
+ss -> sr: save(storeInventoryEntity)
+activate sr
+sr -> db: UPDATE store_inventory \nSET quantity = quantity + requestedQuantity \nWHERE product_id = productId
+activate db
+db --> sr: Confirmation of store stock update
+deactivate db
+sr --> ss: StoreInventory updated
+deactivate sr
+ss --> srs : Store stock updated successfully
+deactivate ss
+srs --> lcc: Supply request validated and stock updated
+deactivate srs
+lcc --> lm: Confirmation of supply request validation and stock update
+deactivate lcc
+
+@enduml
