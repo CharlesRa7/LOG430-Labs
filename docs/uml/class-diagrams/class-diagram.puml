@@ -6,6 +6,10 @@ package "User Domain" {
     +name: string
     +email: string
   }
+
+  class Manager {}
+
+  class LogisticsManager {}
 }
 
 package "Sales Domain" {
@@ -132,5 +136,8 @@ Return "1" o-- "*" SaleProduct : returnedItems
 Return "1" --> "1" User : processedBy
 
 Product "*" -- "*" ProductCategory : categories
+
+Manager -u-|> User
+LogisticsManager -u-|> User
 
 @enduml

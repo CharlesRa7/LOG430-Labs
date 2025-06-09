@@ -12,14 +12,14 @@
 
   <div class="card">
     <div class="card-body">
-      <form th:action="@{/logistics/supply-request" method="POST">
-        <input type="hidden" name="productId" th:value="${productId}">
-        <input type="hidden" name="logisticsCenterId" th:value="${logisticsCenterId}">
+      <form th:action="@{/logistics/supply-request}" method="POST">
+        <input type="hidden" name="productId" th:value="${form.product.id}">
+        <input type="hidden" name="logisticsCenterId" th:value="${form.logisticsCenterId}">
 
         <div class="mb-3">
           <label class="form-label">Product Name</label>
           <input type="text" class="form-control"
-                 th:value="${productName}"
+                 th:value="${form.product.name}"
                  readonly>
         </div>
 
@@ -27,7 +27,7 @@
           <label for="storeId" class="form-label">Store</label>
           <select class="form-select" id="storeId" name="storeId" required>
             <option value="">Select a store</option>
-            <option th:each="store : ${stores}"
+            <option th:each="store : ${form.stores}"
                     th:value="${store.id}"
                     th:text="${store.name}">
             </option>
@@ -41,7 +41,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Submit Request</button>
-        <a th:href="@{/logistics/{id}/stock(id=${logisticsCenterId})}"
+        <a th:href="@{|/logistics/${form.logisticsCenterId}/stock|}"
            class="btn btn-secondary">Cancel</a>
       </form>
     </div>

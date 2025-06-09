@@ -2,6 +2,7 @@ package ets.log430.lab.services.store;
 
 import ets.log430.lab.mappers.StoreMapper;
 import ets.log430.lab.models.dto.SaleDto;
+import ets.log430.lab.models.dto.StoreBasicInfo;
 import ets.log430.lab.models.dto.StoresReportDto;
 import ets.log430.lab.models.store.Store;
 import ets.log430.lab.repositories.product.ProductRepository;
@@ -31,5 +32,17 @@ public class StoreService {
                 .toList();
     }
 
+    public Store getStoreById(Long id) {
+        return storeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Store not found with ID: " + id));
+    }
+
+    public StoreBasicInfo getStoreBasicInfoById(Long id) {
+        return storeRepository.findIdAndNameById(id);
+    }
+
+    public List<StoreBasicInfo> getAllStoresBasicInfo() {
+        return storeRepository.findAllIdAndName();
+    }
 
 }

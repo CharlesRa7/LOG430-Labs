@@ -1,13 +1,11 @@
 package ets.log430.lab.controllers.logistics;
 
-import ets.log430.lab.models.dto.LogisticsCenterDto;
-import ets.log430.lab.models.dto.LogisticsCenterInventoryDto;
+import ets.log430.lab.models.dto.*;
 import ets.log430.lab.services.logistics.LogisticsCenterService;
+import ets.log430.lab.services.logistics.SupplyRequestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,9 +14,12 @@ import java.util.List;
 public class LogisticsCenterController {
 
     private final LogisticsCenterService logisticsCenterService;
+    private final SupplyRequestService supplyRequestService;
 
-    public LogisticsCenterController(LogisticsCenterService logisticsCenterService) {
+    public LogisticsCenterController(LogisticsCenterService logisticsCenterService,
+                                     SupplyRequestService supplyRequestService) {
         this.logisticsCenterService = logisticsCenterService;
+        this.supplyRequestService = supplyRequestService;
     }
 
     @GetMapping("{id}/stock")
@@ -30,12 +31,17 @@ public class LogisticsCenterController {
 
     @GetMapping("{id}/supply-request-form/{productId}")
     public String showSupplyRequestForm(@PathVariable Long id, @PathVariable Long productId, Model model) {
-        LogisticsCenterDto logisticsCenter = logisticsCenterService.consultCentralStock(id);
-        List<LogisticsCenterInventoryDto> inventory = logisticsCenter.getInventory();
+        SupplyRequestFormDto supplyRequestForm = supplyRequestService.fetchSupplyRequestFormDetails(id, productId);
 
-        model.addAttribute("logisticsCenter", logisticsCenter);
-        model.addAttribute("productId", productId);
+        model.addAttribute("form", supplyRequestForm);
 
         return "supply-request-form";
+    }
+
+    @PostMapping("/supply-request")
+    public String submitSupplyRequest(@ModelAttribute SupplyRequestDto supplyRequestDto, Model model) {
+        SupplyRequestResponseDto responseDto = supplyRequestService.createSupplyRequest(supplyRequestDto);
+        model.addAttribute("request", responseDto);
+        return "supply-request-success";
     }
 }

@@ -1,19 +1,33 @@
 @startuml
-skinparam componentStyle uml2
 
 node "Application Server" {
-    component [Thymeleaf Engine] as thymeleaf
-    component [Controllers] as ctrl
-    component [Services] as svc
-    component [Repositories] as repo
+    component "Spring Boot App" {
+        component "Controllers"
+        component "Services"
+        component "Domain Models"
+        component "Repositories"
+        component "DTOs"
+    }
+    port 8080
 }
 
 node "Database Server" {
-    database "PostgreSQL" as postgres
+    database "PostgreSQL" {
+        storage "Production DB"
+    }
+    port 5432
 }
 
-thymeleaf --> ctrl
-ctrl --> svc
-svc --> repo
-repo --> postgres
+node "Client" {
+    component "Web Browser"
+}
+
+"Web Browser" -d-> "Controllers" : HTTPS (8080)
+"Controllers" -d-> "Services"
+"Services" -d-> "Repositories"
+"Repositories" -d-> "PostgreSQL" : JDBC (5432)
+"Services" -r-> "Domain Models"
+"Controllers" ..> "DTOs"
+"Services" ..> "DTOs"
+
 @enduml

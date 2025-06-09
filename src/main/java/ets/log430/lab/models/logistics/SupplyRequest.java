@@ -82,10 +82,3 @@ public class SupplyRequest {
     }
 }
 
-enum SupplyRequestStatus {
-    PENDING,
-    APPROVED,
-    DELIVERED,
-    REJECTED,
-    CANCELLED
-}

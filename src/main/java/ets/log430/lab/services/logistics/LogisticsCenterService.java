@@ -5,7 +5,7 @@ import ets.log430.lab.mappers.LogisticsCenterMapper;
 import ets.log430.lab.models.dto.LogisticsCenterDto;
 import ets.log430.lab.models.dto.LogisticsCenterInventoryDto;
 import ets.log430.lab.models.logistics.LogisticsCenter;
-import ets.log430.lab.repositories.product.LogisticsCenterRepository;
+import ets.log430.lab.repositories.logistics.LogisticsCenterRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,5 +37,10 @@ public class LogisticsCenterService {
                 .toList();
 
         return logisticsCenterMapper.toDto(logisticsCenter.get(), inventory);
+    }
+
+    public LogisticsCenter getLogisticsCenterById(Long id) {
+        return logisticsCenterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Logistics center not found with ID: " + id));
     }
 }

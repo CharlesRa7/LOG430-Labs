@@ -1,6 +1,7 @@
 package ets.log430.lab.services.product;
 
 import ets.log430.lab.models.dto.ProductAddRequestDto;
+import ets.log430.lab.models.dto.ProductBasicInfo;
 import ets.log430.lab.models.product.Product;
 import ets.log430.lab.models.product.ProductCategory;
 import ets.log430.lab.repositories.product.ProductRepository;
@@ -60,6 +61,15 @@ public class ProductService {
         } else {
             return null;
         }
+    }
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+    }
+
+    public ProductBasicInfo getBasicInfoById(Long id) {
+        return productRepository.findIdAndNameById(id);
     }
 
     public Product save(ProductAddRequestDto productAddRequestDto) {

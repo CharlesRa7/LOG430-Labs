@@ -21,32 +21,6 @@ package "Service Layer" {
     [SalesService]
 }
 
-package "Domain Model" {
-    package "Store Domain" {
-        [Store]
-        [StoreInventory]
-        [StoreSalesMetric]
-        [StoreProductMetrics]
-    }
-
-    package "Product Domain" {
-        [Product]
-        [ProductCategory]
-    }
-
-    package "Sales Domain" {
-        [Sale]
-        [SaleProduct]
-        [Return]
-    }
-
-    package "Logistics Domain" {
-        [LogisticsCenter]
-        [LogisticsCenterInventory]
-        [SupplyRequest]
-    }
-}
-
 package "Repository Layer" {
     [StoreRepository]
     [ProductRepository]
@@ -65,13 +39,6 @@ ProductController --> ProductService
 LogisticsCenterController --> LogisticsCenterService
 LogisticsCenterController --> SupplyRequestService
 SalesController --> SalesService
-
-' Service -> Domain Model dependencies
-StoreService --> Store
-ProductService --> Product
-LogisticsCenterService --> LogisticsCenter
-SupplyRequestService --> SupplyRequest
-SalesService --> Sale
 
 ' Service -> Repository dependencies
 StoreService --> StoreRepository

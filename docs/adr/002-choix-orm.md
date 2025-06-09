@@ -1,4 +1,4 @@
-# ADR 001 – Choix de JPA / Hibernate comme solution ORM
+# ADR 002 – Choix de JPA / Hibernate comme solution ORM
 
 ## Statut
 

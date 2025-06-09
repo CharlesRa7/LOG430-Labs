@@ -18,7 +18,7 @@ public class LogisticsCenter {
     @OneToMany(mappedBy = "logisticsCenter", cascade = CascadeType.ALL)
     private Set<LogisticsCenterInventory> inventory = new HashSet<>();
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "logisticsCenter", cascade = CascadeType.ALL)
     private Set<SupplyRequest> supplyRequests = new HashSet<>();
 
     public LogisticsCenter() {}

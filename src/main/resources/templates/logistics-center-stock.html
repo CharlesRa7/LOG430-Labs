@@ -24,7 +24,7 @@
           <td th:text="${item.productName}">Product Name</td>
           <td th:text="${item.quantity != null ? item.quantity : '0'}">0</td>
           <td>
-            <a th:href="@{/logistics/${logisticsCenter.logisticsCenterId}/supply-request-form/${item.productId}}"
+            <a th:href="@{|/logistics/${logisticsCenter.logisticsCenterId}/supply-request-form/${item.productId}|}"
                class="btn btn-primary btn-sm">
               Resupply
             </a>
