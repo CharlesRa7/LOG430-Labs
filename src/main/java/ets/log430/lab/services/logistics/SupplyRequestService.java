@@ -1,15 +1,17 @@
 package ets.log430.lab.services.logistics;
 
 import ets.log430.lab.mappers.SupplyRequestMapper;
-import ets.log430.lab.models.dto.*;
+import ets.log430.lab.models.dto.logistics.SupplyRequestDto;
+import ets.log430.lab.models.dto.logistics.SupplyRequestFormDto;
+import ets.log430.lab.models.dto.logistics.SupplyRequestResponseDto;
+import ets.log430.lab.models.dto.product.ProductBasicInfo;
+import ets.log430.lab.models.dto.stores.StoreBasicInfo;
 import ets.log430.lab.models.logistics.LogisticsCenter;
 import ets.log430.lab.models.logistics.SupplyRequest;
 import ets.log430.lab.models.logistics.SupplyRequestStatus;
 import ets.log430.lab.models.product.Product;
 import ets.log430.lab.models.store.Store;
 import ets.log430.lab.repositories.logistics.SupplyRequestRepository;
-import ets.log430.lab.repositories.product.ProductRepository;
-import ets.log430.lab.repositories.store.StoreRepository;
 import ets.log430.lab.services.product.ProductService;
 import ets.log430.lab.services.store.StoreService;
 import org.springframework.stereotype.Service;

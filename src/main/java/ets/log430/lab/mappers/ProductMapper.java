@@ -1,9 +1,9 @@
 package ets.log430.lab.mappers;
 
-import ets.log430.lab.models.dto.ProductAddRequestDto;
+import ets.log430.lab.models.dto.product.ProductAddRequestDto;
 import ets.log430.lab.models.product.Product;
 import ets.log430.lab.models.product.ProductCategory;
-import ets.log430.lab.models.dto.ProductResponseDto;
+import ets.log430.lab.models.dto.product.ProductResponseDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

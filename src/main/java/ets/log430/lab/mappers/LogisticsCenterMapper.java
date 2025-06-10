@@ -1,7 +1,7 @@
 package ets.log430.lab.mappers;
 
-import ets.log430.lab.models.dto.LogisticsCenterDto;
-import ets.log430.lab.models.dto.LogisticsCenterInventoryDto;
+import ets.log430.lab.models.dto.logistics.LogisticsCenterDto;
+import ets.log430.lab.models.dto.logistics.LogisticsCenterInventoryDto;
 import ets.log430.lab.models.logistics.LogisticsCenter;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
 package ets.log430.lab.repositories.store;
 
-import ets.log430.lab.models.dto.StoreBasicInfo;
+import ets.log430.lab.models.dto.stores.StoreBasicInfo;
 import ets.log430.lab.models.store.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

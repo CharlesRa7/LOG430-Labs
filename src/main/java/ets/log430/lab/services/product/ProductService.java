@@ -1,12 +1,15 @@
 package ets.log430.lab.services.product;
 
-import ets.log430.lab.models.dto.ProductAddRequestDto;
-import ets.log430.lab.models.dto.ProductBasicInfo;
+import ets.log430.lab.models.dto.product.ProductAddRequestDto;
+import ets.log430.lab.models.dto.product.ProductBasicInfo;
+import ets.log430.lab.models.dto.product.request.ProductUpdateRequestDto;
+import ets.log430.lab.models.dto.product.response.ProductUpdateResponseDto;
 import ets.log430.lab.models.product.Product;
 import ets.log430.lab.models.product.ProductCategory;
 import ets.log430.lab.repositories.product.ProductRepository;
-import ets.log430.lab.models.dto.ProductResponseDto;
+import ets.log430.lab.models.dto.product.ProductResponseDto;
 import ets.log430.lab.mappers.ProductMapper;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -81,5 +84,28 @@ public class ProductService {
 
     public void deleteById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public ProductUpdateResponseDto updateProduct(Long id, @Valid ProductUpdateRequestDto updateDto) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+
+        ProductUpdateResponseDto responseDto = new ProductUpdateResponseDto();
+        responseDto.setOldProduct(new ProductUpdateRequestDto(
+                product.getName(),
+                product.getPrice()
+        ));
+
+        product.setName(updateDto.getName());
+        product.setPrice(updateDto.getPrice());
+
+        Product updatedProduct = productRepository.save(product);
+
+        responseDto.setNewProduct(new ProductUpdateRequestDto(
+                updatedProduct.getName(),
+                updatedProduct.getPrice()
+        ));
+
+        return responseDto;
     }
 }

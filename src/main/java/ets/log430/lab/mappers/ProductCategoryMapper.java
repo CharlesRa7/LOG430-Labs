@@ -1,6 +1,6 @@
 package ets.log430.lab.mappers;
 
-import ets.log430.lab.models.dto.ProductCategoryDto;
+import ets.log430.lab.models.dto.product.ProductCategoryDto;
 import ets.log430.lab.models.product.ProductCategory;
 import org.springframework.stereotype.Component;
 

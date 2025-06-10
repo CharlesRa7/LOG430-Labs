@@ -36,6 +36,15 @@ public class Sale {
     @JoinColumn(name = "user_id", nullable = false)
     private User processedBy;
 
+    public Sale() {}
+
+    public Sale(Store store, LocalDateTime date, BigDecimal totalAmount, User processedBy) {
+        this.store = store;
+        this.date = date;
+        this.totalAmount = totalAmount;
+        this.processedBy = processedBy;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -63,6 +72,11 @@ public class Sale {
 
     public void setItems(Set<SaleProduct> items) {
         this.items = items;
+    }
+
+    public void addItem(SaleProduct item) {
+        items.add(item);
+        item.setSale(this); // Ensure the relationship is bidirectional
     }
 
     public BigDecimal getTotalAmount() {

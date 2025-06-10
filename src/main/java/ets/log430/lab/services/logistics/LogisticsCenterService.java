@@ -2,8 +2,8 @@ package ets.log430.lab.services.logistics;
 
 import ets.log430.lab.mappers.LogisticsCenterInventoryMapper;
 import ets.log430.lab.mappers.LogisticsCenterMapper;
-import ets.log430.lab.models.dto.LogisticsCenterDto;
-import ets.log430.lab.models.dto.LogisticsCenterInventoryDto;
+import ets.log430.lab.models.dto.logistics.LogisticsCenterDto;
+import ets.log430.lab.models.dto.logistics.LogisticsCenterInventoryDto;
 import ets.log430.lab.models.logistics.LogisticsCenter;
 import ets.log430.lab.repositories.logistics.LogisticsCenterRepository;
 import org.springframework.stereotype.Service;

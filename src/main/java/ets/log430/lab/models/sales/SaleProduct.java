@@ -25,6 +25,14 @@ public class SaleProduct {
     @Column(name = "sub_total", nullable = false)
     private double subTotal;
 
+    public SaleProduct() {}
+
+    public SaleProduct(Product product, int quantity, double subTotal) {
+        this.product = product;
+        this.quantity = quantity;
+        this.subTotal = subTotal;
+    }
+
     // Getters and Setters
     public SaleProductId getId() {
         return id;

@@ -1,6 +1,6 @@
 package ets.log430.lab.mappers;
 
-import ets.log430.lab.models.dto.SupplyRequestResponseDto;
+import ets.log430.lab.models.dto.logistics.SupplyRequestResponseDto;
 import ets.log430.lab.models.logistics.SupplyRequest;
 import org.springframework.stereotype.Component;
 

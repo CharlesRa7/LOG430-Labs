@@ -1,7 +1,12 @@
 package ets.log430.lab.mappers;
 
-import ets.log430.lab.models.dto.*;
+import ets.log430.lab.models.dto.sales.SaleDto;
+import ets.log430.lab.models.dto.sales.SaleProductDto;
+import ets.log430.lab.models.dto.stores.StoreInventoryDto;
+import ets.log430.lab.models.dto.stores.StoreProductMetricsDto;
+import ets.log430.lab.models.dto.stores.StoresReportDto;
 import ets.log430.lab.models.store.Store;
+import ets.log430.lab.models.store.StoreInventory;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -53,6 +58,15 @@ public class StoreMapper {
                 store.getSalesMetrics().getTotalSales(),
                 productMetrics,
                 inventory
+        );
+    }
+
+    public StoreInventoryDto storeInventoryToStoreInventoryDto(StoreInventory storeInventory) {
+        return new StoreInventoryDto(
+                storeInventory.getProduct().getName(),
+                storeInventory.getQuantity(),
+                storeInventory.getMinThreshold(),
+                storeInventory.getMaxThreshold()
         );
     }
 }

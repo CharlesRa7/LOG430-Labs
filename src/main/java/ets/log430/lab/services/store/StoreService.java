@@ -1,17 +1,16 @@
 package ets.log430.lab.services.store;
 
 import ets.log430.lab.mappers.StoreMapper;
-import ets.log430.lab.models.dto.SaleDto;
-import ets.log430.lab.models.dto.StoreBasicInfo;
-import ets.log430.lab.models.dto.StoresReportDto;
+import ets.log430.lab.models.dto.stores.StoreBasicInfo;
+import ets.log430.lab.models.dto.stores.StoreInventoryDto;
+import ets.log430.lab.models.dto.stores.StoresReportDto;
 import ets.log430.lab.models.store.Store;
-import ets.log430.lab.repositories.product.ProductRepository;
+import ets.log430.lab.models.store.StoreInventory;
 import ets.log430.lab.repositories.store.StoreRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class StoreService {
@@ -43,6 +42,18 @@ public class StoreService {
 
     public List<StoreBasicInfo> getAllStoresBasicInfo() {
         return storeRepository.findAllIdAndName();
+    }
+
+    public List<StoreInventoryDto> getStoreInventory(Long storeId) {
+        Optional<Store> store = storeRepository.findById(storeId);
+
+        if (store.isEmpty()) {
+            throw new RuntimeException("Store not found with ID: " + storeId);
+        }
+
+        return store.get().getInventory().stream()
+                .map(storeMapper::storeInventoryToStoreInventoryDto)
+                .toList();
     }
 
 }
