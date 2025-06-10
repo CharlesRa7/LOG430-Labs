@@ -1,0 +1,266 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/api/v1/products/{id}": {
+      "put": {
+        "tags": [
+          "product-api-controller"
+        ],
+        "summary": "Update a product",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Product ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 3
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductUpdateRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductUpdateResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stores/{id}/stock": {
+      "get": {
+        "tags": [
+          "store-api-controller"
+        ],
+        "summary": "Get store inventory",
+        "operationId": "getStoreInventory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Store ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StoreInventoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sales/period": {
+      "get": {
+        "tags": [
+          "sales-api-controller"
+        ],
+        "summary": "Get All Sales for a Given Period",
+        "operationId": "getSalesForPeriod",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Start Date",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-01-01"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SaleResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "hello-controller"
+        ],
+        "operationId": "hello",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProductUpdateRequestDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the product",
+            "example": "Novel"
+          },
+          "price": {
+            "type": "number",
+            "format": "double",
+            "description": "The price of the product",
+            "example": 15.5
+          }
+        }
+      },
+      "ProductUpdateResponseDto": {
+        "type": "object",
+        "properties": {
+          "oldProduct": {
+            "$ref": "#/components/schemas/ProductUpdateRequestDto"
+          },
+          "newProduct": {
+            "$ref": "#/components/schemas/ProductUpdateRequestDto"
+          }
+        }
+      },
+      "StoreInventoryDto": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minimumStockLevel": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maximumStockLevel": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SaleProductDto": {
+        "type": "object",
+        "properties": {
+          "productName": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subTotal": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "SaleResponseDto": {
+        "type": "object",
+        "properties": {
+          "saleId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "saleDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "customerName": {
+            "type": "string"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SaleProductDto"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}
