@@ -36,4 +36,7 @@
     ./mvnw spring-boot:run -Dspring-boot.run.arguments="--server.port=8080"
     ```
 
-5. Après le build et l'exécution, l'application est accessible sur localhost:{port} et le UI est accessible à la route `/products`
+5. Après le build et l'exécution, l'application est accessible sur localhost:{port} et le Swagger UI est accessible à la route `/swagger-ui/index.html`
+6. Pour l'authentification, utiliser les identifiants suivants :
+   - **Username**: sigle du cours en minuscules
+   - **Password**: sigle du cours en minuscules
