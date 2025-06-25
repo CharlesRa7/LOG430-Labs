@@ -1,5 +1,38 @@
 services:
-  lab:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+
+
+#  lab:
+#    restart: always
+#    depends_on:
+#      - postgres
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#    container_name: lab
+#    environment:
+#      DB_URL: jdbc:postgresql://postgres:5432/labdb
+#      DB_USER: log430
+#      DB_PASSWORD: log430
+#      SPRING_PROFILES_ACTIVE: dev
+#    networks:
+#      - monitoring
+#      - database
+#    volumes:
+#      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
+
+
+  lab1:
     restart: always
     depends_on:
       - postgres
@@ -7,16 +40,59 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
-    container_name: lab
+      - "8081:8080"
+    expose:
+      - "8080"
+    container_name: lab1
     environment:
       DB_URL: jdbc:postgresql://postgres:5432/labdb
       DB_USER: log430
       DB_PASSWORD: log430
       SPRING_PROFILES_ACTIVE: dev
-
+    networks:
+        - monitoring
+        - database
+        - loadbalancer
     volumes:
       - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
+
+  lab2:
+    restart: always
+    depends_on:
+      - postgres
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    expose:
+      - "8080"
+    container_name: lab2
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/labdb
+      DB_USER: log430
+      DB_PASSWORD: log430
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - monitoring
+      - database
+      - loadbalancer
+    volumes:
+      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-lb
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - lab1
+      - lab2
+    networks:
+      - loadbalancer
+
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -29,6 +105,31 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - database
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
 
 volumes:
   pgdata:
+  grafana-storage:
+
+networks:
+  monitoring:
+  database:
+  loadbalancer:
+    driver: bridge
+
