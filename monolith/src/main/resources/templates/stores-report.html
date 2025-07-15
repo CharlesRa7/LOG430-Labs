@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Stores Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4">Stores Report</h1>
+
+  <div th:each="store : ${storesReport}" class="card mb-4">
+    <div class="card-header">
+      <h2 th:text="${store.storeName}">Store Name</h2>
+      <h4>Total Sales: $<span th:text="${#numbers.formatDecimal(store.totalSales, 0, 'COMMA', 2, 'POINT')}">0.00</span></h4>
+    </div>
+
+    <div class="card-body">
+      <!-- Product Metrics -->
+      <h3>Product Metrics</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity Sold</th>
+          <th>Revenue</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="metric : ${store.productMetrics}">
+          <td th:text="${metric.productName}">Product</td>
+          <td th:text="${metric.quantitySold}">0</td>
+          <td>$<span th:text="${#numbers.formatDecimal(metric.revenueGenerated, 0, 'COMMA', 2, 'POINT')}">0.00</span></td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- Inventory -->
+      <h3>Current Inventory</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Min Threshold</th>
+          <th>Max Threshold</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${store.inventory}">
+          <td th:text="${item.productName}">Product</td>
+          <td th:text="${item.quantity}">0</td>
+          <td th:text="${item.minimumStockLevel}">0</td>
+          <td th:text="${item.maximumStockLevel}">0</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <!-- Recent Sales -->
+      <h3>Recent Sales</h3>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Products</th>
+          <th>Total</th>
+          <th>Processed By</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sale : ${store.sales}">
+          <td th:text="${#temporals.format(sale.saleDate, 'yyyy-MM-dd HH:mm')}">Date</td>
+          <td>
+            <ul class="list-unstyled">
+              <li th:each="product : ${sale.products}">
+                <span th:text="${product.productName}">Product</span>
+                (<span th:text="${product.quantity}">0</span> units,
+                $<span th:text="${#numbers.formatDecimal(product.subTotal, 0, 'COMMA', 2, 'POINT')}">0.00</span>)
+              </li>
+            </ul>
+          </td>
+          <td>$<span th:text="${#numbers.formatDecimal(sale.totalAmount, 0, 'COMMA', 2, 'POINT')}">0.00</span></td>
+          <td th:text="${sale.buyerName}">Employee</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

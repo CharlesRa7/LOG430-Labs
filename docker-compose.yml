@@ -9,8 +9,59 @@ services:
     networks:
       - monitoring
 
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - monitoring
+      - database
+    depends_on:
+      - lab
+      - sales-service
 
-#  lab:
+  lab:
+    restart: always
+    depends_on:
+      - postgres-monolith
+    build:
+      context: ./monolith
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: lab
+    environment:
+      DB_URL: jdbc:postgresql://postgres-monolith:5432/labdb
+      DB_USER: log430
+      DB_PASSWORD: log430
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - monitoring
+      - database
+    volumes:
+      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
+
+  sales-service:
+    build:
+      context: ./sales-microservice
+      dockerfile: Dockerfile
+    container_name: sales-service
+    ports:
+      - "8081:8080"
+    environment:
+      DB_URL: jdbc:postgresql://postgres-sales:5432/salesdb
+      DB_USER: log430
+      DB_PASSWORD: log430
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - monitoring
+      - database
+    depends_on:
+      - postgres-sales
+
+#  lab1:
 #    restart: always
 #    depends_on:
 #      - postgres
@@ -18,8 +69,34 @@ services:
 #      context: .
 #      dockerfile: Dockerfile
 #    ports:
-#      - "8080:8080"
-#    container_name: lab
+#      - "8081:8080"
+#    expose:
+#      - "8080"
+#    container_name: lab1
+#    environment:
+#      DB_URL: jdbc:postgresql://postgres:5432/labdb
+#      DB_USER: log430
+#      DB_PASSWORD: log430
+#      SPRING_PROFILES_ACTIVE: dev
+#    networks:
+#        - monitoring
+#        - database
+#        - loadbalancer
+#    volumes:
+#      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
+#
+#  lab2:
+#    restart: always
+#    depends_on:
+#      - postgres
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8082:8080"
+#    expose:
+#      - "8080"
+#    container_name: lab2
 #    environment:
 #      DB_URL: jdbc:postgresql://postgres:5432/labdb
 #      DB_USER: log430
@@ -28,74 +105,26 @@ services:
 #    networks:
 #      - monitoring
 #      - database
+#      - loadbalancer
 #    volumes:
 #      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
+#
+#  nginx:
+#    image: nginx:latest
+#    container_name: nginx-lb
+#    ports:
+#      - "8080:80"
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+#    depends_on:
+#      - lab1
+#      - lab2
+#    networks:
+#      - loadbalancer
 
-
-  lab1:
-    restart: always
-    depends_on:
-      - postgres
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8080"
-    expose:
-      - "8080"
-    container_name: lab1
-    environment:
-      DB_URL: jdbc:postgresql://postgres:5432/labdb
-      DB_USER: log430
-      DB_PASSWORD: log430
-      SPRING_PROFILES_ACTIVE: dev
-    networks:
-        - monitoring
-        - database
-        - loadbalancer
-    volumes:
-      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
-
-  lab2:
-    restart: always
-    depends_on:
-      - postgres
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8082:8080"
-    expose:
-      - "8080"
-    container_name: lab2
-    environment:
-      DB_URL: jdbc:postgresql://postgres:5432/labdb
-      DB_USER: log430
-      DB_PASSWORD: log430
-      SPRING_PROFILES_ACTIVE: dev
-    networks:
-      - monitoring
-      - database
-      - loadbalancer
-    volumes:
-      - /src/main/resources/application-dev.properties:/app/config/application-dev.properties
-
-  nginx:
-    image: nginx:latest
-    container_name: nginx-lb
-    ports:
-      - "8080:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - lab1
-      - lab2
-    networks:
-      - loadbalancer
-
-  postgres:
+  postgres-monolith:
     image: postgres:latest
-    container_name: postgres
+    container_name: postgres-monolith
     environment:
       POSTGRES_USER: log430
       POSTGRES_PASSWORD: log430
@@ -103,7 +132,22 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata-monolith:/var/lib/postgresql/data
+      - ./initdb:/docker-entrypoint-initdb.d
+    networks:
+      - database
+
+  postgres-sales:
+    image: postgres:latest
+    container_name: postgres-sales
+    environment:
+      POSTGRES_USER: log430
+      POSTGRES_PASSWORD: log430
+      POSTGRES_DB: salesdb
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata-sales:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
     networks:
       - database
@@ -124,7 +168,8 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards
 
 volumes:
-  pgdata:
+  pgdata-monolith:
+  pgdata-sales:
   grafana-storage:
 
 networks:

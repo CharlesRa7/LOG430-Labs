@@ -1,0 +1,7 @@
+package ets.log430.sales.repositories.product;
+
+import ets.log430.sales.models.product.ProductCategory;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Long> {
+}
